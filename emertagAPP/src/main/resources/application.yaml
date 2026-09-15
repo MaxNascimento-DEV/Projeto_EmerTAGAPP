@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: emertagbd
+
+  datasource:
+    url: ${BD_URL:jdbc:mysql://localhost:3306/emertagbd?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
