@@ -41,7 +41,8 @@ public class Usuario {
 
     @PrePersist
     private void prePersist(){
-        this.criadoEM = LocalDateTime.now(); 
+        this.criadoEM = LocalDateTime.now();
+        this.atualizaEm = LocalDateTime.now(); 
     }
     
     @PreUpdate 
