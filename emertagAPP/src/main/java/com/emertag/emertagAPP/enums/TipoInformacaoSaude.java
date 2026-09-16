@@ -5,5 +5,5 @@ public enum TipoInformacaoSaude {
     CODICAO_SAUDE,
     MEDICAMENTO_CONTINUO,
     NECESSIDADE_ESPECIAL,
-    DOENÇAS_SANGUINEA,
+    BIOSSEGURANCA,
 }
