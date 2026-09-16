@@ -1,13 +1,8 @@
 package com.emertag.emertagAPP.entity;
 import com.emertag.emertagAPP.enums.TipoInformacaoSaude;
 import jakarta.persistence.*;
-import jakarta.websocket.Decoder.Text;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Table(name = "informacao_saude")
