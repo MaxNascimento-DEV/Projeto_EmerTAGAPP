@@ -15,7 +15,8 @@ public class ConfiguracaoAcessibilidade {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_configuracao")
+    private Long idConfiguracao;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
