@@ -33,7 +33,7 @@ public class PrivacidadePerfil {
     @Builder.Default
     private Boolean exibirMedicamentos = true; 
 
-    @Column(name = "exibir_Necessidades", nullable = false)
+    @Column(name = "exibir_necessidades", nullable = false)
     @Builder.Default
     private Boolean exibirNecessidades = true;
 
