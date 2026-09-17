@@ -18,7 +18,7 @@ public class PerfilEmergencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pefil")
-    private Long id;
+    private Long idPerfil;
 
     @ManyToOne
     @JoinColumn(name = "id_administrador", nullable = false)
