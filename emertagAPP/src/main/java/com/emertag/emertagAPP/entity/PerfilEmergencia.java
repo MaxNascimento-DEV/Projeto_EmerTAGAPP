@@ -46,8 +46,8 @@ public class PerfilEmergencia {
     @Column(name = "token_publico", nullable = false, unique = true, length = 100)
     private String tokenPublico;
 
-    @Column(name = "ultima_atualização_saude")
-    private LocalDateTime ultimaAtualizaçãoSaude; 
+    @Column(name = "ultima_atualizacao_saude")
+    private LocalDateTime ultimaAtualizacaoSaude; 
 
     @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
