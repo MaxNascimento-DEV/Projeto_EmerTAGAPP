@@ -38,7 +38,7 @@ public class ContatoEmergencia {
     private LocalDateTime atualizadoEm; 
 
     @PrePersist
-    protected  void prePresist(){
+    protected  void prePersist(){
         this.criadoEm = LocalDateTime.now();
         this.atualizadoEm = LocalDateTime.now(); 
     }

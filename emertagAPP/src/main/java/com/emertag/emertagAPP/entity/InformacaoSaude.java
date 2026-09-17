@@ -32,7 +32,7 @@ public class InformacaoSaude {
     @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEM;
 
-    @Column(name = "atualiazado_em")
+    @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEM; 
 
 

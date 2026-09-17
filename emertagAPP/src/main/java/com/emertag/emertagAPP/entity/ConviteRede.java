@@ -23,7 +23,7 @@ public class ConviteRede {
     @JoinColumn(name = "id_perfil", nullable = false)
     private PerfilEmergencia perfil;
 
-    @Column(name = "email_convidado", nullable = false, length = 15)
+    @Column(name = "email_convidado", nullable = false, length = 150)
     private String emailConvidado; 
 
     @Column(name = "pode_visualizar_privado", nullable = false)
