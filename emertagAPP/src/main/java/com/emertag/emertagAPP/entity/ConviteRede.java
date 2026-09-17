@@ -33,7 +33,7 @@ public class ConviteRede {
     private Boolean podeEditar; 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 150)
+    @Column(name = "status", nullable = false, length = 30)
     private StatusConvite status; 
 
     @Column(name = "criado_em", nullable = false, updatable = false)
