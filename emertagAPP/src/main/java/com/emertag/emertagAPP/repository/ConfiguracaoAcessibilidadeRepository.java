@@ -1,13 +1,11 @@
 package com.emertag.emertagAPP.repository;
 
-import java.util.Optional;
-
+import com.emertag.emertagAPP.entity.ConfiguracaoAcessibilidade;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.emertag.emertagAPP.entity.ConfiguracaoAcessibilidade;
+import java.util.Optional;
 
 public interface ConfiguracaoAcessibilidadeRepository extends JpaRepository<ConfiguracaoAcessibilidade, Long> {
-    
-    Optional<ConfiguracaoAcessibilidade> findByUsuari_idUsuario(Long idUsuario);
 
+    Optional<ConfiguracaoAcessibilidade> findByUsuario_IdUsuario(Long idUsuario);
 }
