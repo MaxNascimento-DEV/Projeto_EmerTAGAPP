@@ -8,49 +8,54 @@ import com.emertag.emertagAPP.repository.InformacaoSaudeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.ProcessHandle.Info;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Service 
+@Service
 public class InformacaoSaudeService {
-    private final InformacaoSaudeRepository informacaoRepository;
-    private final PerfilEmergenciaService perfilService; 
 
-    public InformacaoSaudeService(InformacaoSaudeRepository informacaoRepository, PerfilEmergenciaService perfilService){
+    private final InformacaoSaudeRepository informacaoRepository;
+    private final AutorizacaoPerfilService autorizacaoService;
+    private final PerfilEmergenciaService perfilService;
+
+    public InformacaoSaudeService(InformacaoSaudeRepository informacaoRepository,
+                                   AutorizacaoPerfilService autorizacaoService,
+                                   PerfilEmergenciaService perfilService) {
         this.informacaoRepository = informacaoRepository;
-        this.perfilService = perfilService; 
+        this.autorizacaoService = autorizacaoService;
+        this.perfilService = perfilService;
     }
 
     @Transactional
-      public InformacaoSaude adicionar(Long idPerfil, TipoInformacaoSaude tipo, String descricao, Usuario solicitante){
-        PerfilEmergencia perfil = perfilService.validarAdministrador(idPerfil, solicitante);
+    public InformacaoSaude adicionar(Long idPerfil, TipoInformacaoSaude tipo, String descricao, Usuario solicitante) {
+        PerfilEmergencia perfil = autorizacaoService.validarAdministrador(idPerfil, solicitante);
 
         InformacaoSaude info = InformacaoSaude.builder()
-        .perfil(perfil)
-        .tipo(tipo)
-        .descricao(descricao)
-        .build(); 
+                .perfil(perfil)
+                .tipo(tipo)
+                .descricao(descricao)
+                .build();
 
         InformacaoSaude salvo = informacaoRepository.save(info);
-        perfilService.marcaSaudeAtualizada(idPerfil);
+        perfilService.marcarSaudeAtualizada(idPerfil);
 
         return salvo;
     }
 
-    @Transactional 
-    public void remover(Long idInformacao, Long idPerfil, Usuario solicitante){
-        perfilService.validarAdministrador(idPerfil, solicitante);
+    @Transactional
+    public void remover(Long idInformacao, Long idPerfil, Usuario solicitante) {
+        autorizacaoService.validarAdministrador(idPerfil, solicitante);
 
-        InformacaoSaude info = informacaoRepository.findById(idInformacao).orElseThrow(() -> new IllegalArgumentException("Informação não encontrada."));
-        
+        InformacaoSaude info = informacaoRepository.findById(idInformacao)
+                .orElseThrow(() -> new IllegalArgumentException("Informação não encontrada."));
+
         if (!info.getPerfil().getIdPerfil().equals(idPerfil)) {
-             throw new IllegalArgumentException("Essa informação não pertence a este perfil.");
+            throw new IllegalArgumentException("Essa informação não pertence a este perfil.");
         }
-        
+
         informacaoRepository.delete(info);
-        perfilService.marcaSaudeAtualizada(idPerfil);
+        perfilService.marcarSaudeAtualizada(idPerfil);
     }
 
     @Transactional(readOnly = true)
