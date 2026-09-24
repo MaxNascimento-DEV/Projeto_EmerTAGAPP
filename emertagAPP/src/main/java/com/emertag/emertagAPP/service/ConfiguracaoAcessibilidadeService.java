@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConfiguracaoAcessibilidadeService {
 
     private final ConfiguracaoAcessibilidadeRepository configuracaoRepository;
-
+    
     public ConfiguracaoAcessibilidadeService(ConfiguracaoAcessibilidadeRepository configuracaoRepository){
         this.configuracaoRepository = configuracaoRepository; 
     }
@@ -40,6 +40,6 @@ public class ConfiguracaoAcessibilidadeService {
         
         return configuracaoRepository.save(config); 
     }
-}   
+}
 
 
