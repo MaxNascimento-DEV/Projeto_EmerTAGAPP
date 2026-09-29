@@ -31,7 +31,7 @@ public class PerfilEmergencia {
     private LocalDate dataNascimento; 
 
     @Column(name = "tipo_sanguineo", length = 3)
-    private String TipoSanguineo;
+    private String tipoSanguineo;
 
     @Column(name = "foto_url", length = 500)
     private String fotoUrl;
