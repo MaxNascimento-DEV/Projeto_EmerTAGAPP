@@ -27,7 +27,7 @@ public class ConfiguracaoAcessibilidade {
     private TamanhoTexto tamanhoTexto;
 
     @Column(name = "alto_contraste")
-    private boolean altoContraste; 
+    private Boolean altoContraste; 
 
     @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEM;
