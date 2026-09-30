@@ -14,7 +14,7 @@ public class UsuarioResponseDTO {
     
     private Long idUsuario;
     private String nome;
-    private String emial;
+    private String email;
     private String telefone;
     private String fotoUrl;
     private LocalDateTime criadoEm;
