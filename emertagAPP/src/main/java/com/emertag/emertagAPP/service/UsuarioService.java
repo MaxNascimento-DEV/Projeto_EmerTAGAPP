@@ -34,4 +34,10 @@ public class UsuarioService {
         }
         return usuario; 
     }
+
+    @Transactional(readOnly = true)
+    public Usuario buscarPorId(Long id){
+        return usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usúario nao encontrado."));
+    }
+
 }
