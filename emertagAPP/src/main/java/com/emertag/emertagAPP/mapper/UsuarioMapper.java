@@ -14,7 +14,7 @@ public class UsuarioMapper {
         return UsuarioResponseDTO.builder()
                 .idUsuario(usuario.getIdUsuario())
                 .nome(usuario.getNome())
-                .emial(usuario.getEmail())
+                .email(usuario.getEmail())
                 .telefone(usuario.getTelefone())
                 .fotoUrl(usuario.getFotoUrl())
                 .criadoEm(usuario.getCriadoEM())
