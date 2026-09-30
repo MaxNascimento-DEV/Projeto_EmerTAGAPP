@@ -1,5 +1,8 @@
 package com.emertag.emertagAPP.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter 
@@ -10,10 +13,19 @@ import lombok.*;
 
 public class UsuarioRequestDTO {
 
+    @NotBlank(message = "O Nome é obrigatorio")
     private String nome;
+    
+    @NotBlank(message = "O Email é obrigatorio")
+    @Email(message = "E-mail inválido")
     private String email;
+
     private String telefone;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
     private String senha;
+
     private String fotoUrl;
     
 }
