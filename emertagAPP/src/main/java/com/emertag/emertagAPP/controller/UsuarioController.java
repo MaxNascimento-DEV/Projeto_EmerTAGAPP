@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.emertag.emertagAPP.dtos.*;
 import com.emertag.emertagAPP.entity.Usuario;
 import com.emertag.emertagAPP.mapper.UsuarioMapper;
+import com.emertag.emertagAPP.security.JwtService;
 import com.emertag.emertagAPP.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -20,11 +21,12 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final JwtService jwtService;
 
-    public UsuarioController(UsuarioService usuarioService, UsuarioMapper usuarioMapper){
+    public UsuarioController(UsuarioService usuarioService, UsuarioMapper usuarioMapper, JwtService jwtService) {
         this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
-        
+        this.jwtService = jwtService;
     }
 
     @PostMapping 
@@ -52,7 +54,7 @@ public class UsuarioController {
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody  LoginRequestDTO dto){
         Usuario usuario = usuarioService.autenticar(dto.getEmail(), dto.getSenha());
 
-        String token = "TOKEN_AUTENTICADO";
+        String token = jwtService.gerarToken(usuario.getEmail());
 
         LoginResponseDTO response = LoginResponseDTO.builder()
                                     .token(token)
@@ -63,7 +65,7 @@ public class UsuarioController {
     
     }
 
-    
+
 
 
 }
