@@ -68,4 +68,9 @@ public class InformacaoSaudeService {
                         Collectors.mapping(InformacaoSaude::getDescricao, Collectors.toList())
                 ));
     }
+
+    @Transactional(readOnly = true)
+public List<InformacaoSaude> listarPorPerfilCompleto(Long idPerfil) {
+    return informacaoRepository.findByPerfil_IdPerfil(idPerfil);
+}
 }
