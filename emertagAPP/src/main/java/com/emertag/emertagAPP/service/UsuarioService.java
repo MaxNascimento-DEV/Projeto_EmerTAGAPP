@@ -40,4 +40,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usúario nao encontrado."));
     }
 
+    @Transactional(readOnly = true)
+    public Usuario atualizar(Usuario usuarioAutenticado, String nome, String email, String fotoUrl){
+        usuarioAutenticado.setNome(nome);
+        usuarioAutenticado.setEmail(email);
+        usuarioAutenticado.setFotoUrl(fotoUrl);
+        return usuarioRepository.save(usuarioAutenticado);
+    }
+
 }
