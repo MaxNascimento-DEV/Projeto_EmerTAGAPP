@@ -3,6 +3,7 @@ package com.emertag.emertagAPP.controller;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,12 +44,6 @@ public class UsuarioController {
 
         return ResponseEntity.created(location).body(response);
     }   
-
-    @GetMapping("/{id}")
-        public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id){
-            Usuario usuario = usuarioService.buscarPorId(id);
-            return ResponseEntity.ok(usuarioMapper.paraUsuarioResponseDTO(usuario)); 
-    }
     
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody  LoginRequestDTO dto){
@@ -65,7 +60,15 @@ public class UsuarioController {
     
     }
 
+    @GetMapping("meus-dados")
+     public ResponseEntity<UsuarioResponseDTO> meusDados(@AuthenticationPrincipal Usuario usuarioAutenticado) {
+        return ResponseEntity.ok(usuarioMapper.paraUsuarioResponseDTO(usuarioAutenticado));
+    }
 
-
+    @PostMapping("/atualizar-dados")
+    public ResponseEntity<UsuarioResponseDTO> atualizarDados(@AuthenticationPrincipal Usuario usuarioAutenticado, @Valid @RequestBody AtualizarUsuarioDTO dto){
+        Usuario atualizado = usuarioService.atualizar(usuarioAutenticado, dto.getNome(), dto.getTelefone(), dto.getFotoUrl());
+        return ResponseEntity.ok(usuarioMapper.paraUsuarioResponseDTO(atualizado));
+    }
 
 }
