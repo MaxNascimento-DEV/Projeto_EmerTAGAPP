@@ -7,7 +7,7 @@ import com.emertag.emertagAPP.entity.ConfiguracaoAcessibilidade;
 @Component 
 public class ConfiguracaoAcessibilidadeMapper {
 
-    public ConfiguracaoAcessibilidadeResponseDTO paraResonseDTO(ConfiguracaoAcessibilidade config){
+    public ConfiguracaoAcessibilidadeResponseDTO paraResponseDTO(ConfiguracaoAcessibilidade config){
         return ConfiguracaoAcessibilidadeResponseDTO.builder()
         .tamanhoTexto(config.getTamanhoTexto())
         .altoContraste(config.getAltoContraste())
