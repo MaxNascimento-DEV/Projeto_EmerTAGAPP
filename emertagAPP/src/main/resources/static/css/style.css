@@ -1,0 +1,86 @@
+﻿:root {
+    --verde-agua: #e0f2f1;
+    --verde-agua-escuro: #b2dfdb;
+    --verde-primario: #009688;
+    --verde-primario-hover: #00796b;
+    --azul-primario: #2563eb;
+    --azul-primario-hover: #1d4ed8;
+    --texto-principal: #1f2937;
+    --texto-secundario: #6b7280;
+    --branco: #ffffff;
+    --cinza-borda: #e5e7eb;
+    --vermelho-alerta: #dc2626;
+    --amarelo-alerta: #f59e0b;
+    --radius-card: 24px;
+    --radius-input: 12px;
+    --radius-botao: 12px;
+    --sombra-card: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --sombra-suave: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --fonte-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --tamanho-base: 16px;
+    --transicao: 0.2s ease;
+}
+
+body.alto-contraste {
+    --verde-agua: #000000;
+    --verde-agua-escuro: #333333;
+    --texto-principal: #ffffff;
+    --texto-secundario: #f0f0f0;
+    --branco: #000000;
+    --cinza-borda: #ffffff;
+    --verde-primario: #ffff00;
+    --azul-primario: #ffff00;
+    --azul-primario-hover: #ffff66;
+}
+body.alto-contraste .card { border: 2px solid #ffffff; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: var(--tamanho-base); scroll-behavior: smooth; }
+body {
+    font-family: var(--fonte-base);
+    color: var(--texto-principal);
+    background-color: var(--verde-agua);
+    background-image: radial-gradient(circle at 1px 1px, rgba(0, 150, 136, 0.15) 1px, transparent 0);
+    background-size: 24px 24px;
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+button { font-family: inherit; }
+
+.barra-acessibilidade {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 999;
+}
+.barra-acessibilidade button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--branco);
+    box-shadow: var(--sombra-suave);
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--texto-principal);
+    transition: transform var(--transicao), box-shadow var(--transicao);
+}
+.barra-acessibilidade button:hover { transform: scale(1.1); box-shadow: var(--sombra-card); }
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--verde-agua-escuro);
+    border-top-color: var(--verde-primario);
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+
+.text-center { text-align: center; }
+.hidden { display: none !important; }
+[hidden] { display: none !important; }
