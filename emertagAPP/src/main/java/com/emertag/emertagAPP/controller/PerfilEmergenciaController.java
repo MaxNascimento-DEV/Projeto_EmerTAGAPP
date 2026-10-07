@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 
 public class PerfilEmergenciaController {
 
-   private final AutorizacaoPerfilService autorizacaoPerfilService;
    private final PerfilEmergenciaService perfilEmergenciaService;
    private final InformacaoSaudeService informacaoSaudeService;
    private final ContatoEmergenciaService contatoEmergenciaService;
@@ -33,7 +31,6 @@ public class PerfilEmergenciaController {
         this.contatoEmergenciaService = contatoEmergenciaService;
         this.privacidadePerfilService = privacidadePerfilService;
         this.perfilEmergenciaMapper = perfilEmergenciaMapper;
-        this.autorizacaoPerfilService = autorizacaoPerfilService;
     }
 
     @PostMapping("/criar")
@@ -92,11 +89,5 @@ public class PerfilEmergenciaController {
 
         return ResponseEntity.ok(dto); 
     }
-
-
-
-
-
-
 
 }
