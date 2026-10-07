@@ -3,6 +3,7 @@ package com.emertag.emertagAPP.security;
 import com.emertag.emertagAPP.entity.Usuario;
 import com.emertag.emertagAPP.repository.UsuarioRepository;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,7 +41,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String email = jwtService.extrairEmail(token);
+        String email;
+        try {
+            email = jwtService.extrairEmail(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            // Token inválido ou expirado: segue sem autenticar e o Security responde 401
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);

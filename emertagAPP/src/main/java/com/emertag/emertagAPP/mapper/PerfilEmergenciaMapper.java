@@ -9,7 +9,9 @@ import com.emertag.emertagAPP.entity.InformacaoSaude;
 import com.emertag.emertagAPP.entity.PerfilEmergencia;
 import com.emertag.emertagAPP.entity.PrivacidadePerfil;
 import com.emertag.emertagAPP.enums.TipoInformacaoSaude;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,7 +21,18 @@ import java.util.stream.Collectors;
 
 @Component
 public class PerfilEmergenciaMapper {
-    
+
+    // Endereço que o QR Code abre. Vazio = usa o mesmo endereço pelo qual o app acessou o backend
+    @Value("${app.url-publica:}")
+    private String urlPublicaBase;
+
+    private String baseUrlPublica() {
+        if (urlPublicaBase != null && !urlPublicaBase.isBlank()) {
+            return urlPublicaBase.replaceAll("/$", "");
+        }
+        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+    }
+
     public PerfilEmergenciaResponseDTO paraResponseDTO(PerfilEmergencia perfil){
         return PerfilEmergenciaResponseDTO.builder()
         .idPerfil(perfil.getIdPerfil())
@@ -30,7 +43,7 @@ public class PerfilEmergenciaMapper {
         .tipoPerfil(perfil.getTipoPerfil())
         .parentesco(perfil.getParentesco())
         .tokenPublico(perfil.getTokenPublico())
-        .urlPublica("https://emertag.com.br/e/" + perfil.getTokenPublico())
+        .urlPublica(baseUrlPublica() + "/e/" + perfil.getTokenPublico())
         .ultimaAtualizacaoSaude(perfil.getUltimaAtualizacaoSaude())
         .build();
     

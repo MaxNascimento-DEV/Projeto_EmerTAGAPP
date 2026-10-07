@@ -1,5 +1,6 @@
 package com.emertag.emertagAPP.controller;
 
+import com.emertag.emertagAPP.dtos.DadosSaudeRequestDTO;
 import com.emertag.emertagAPP.dtos.DadosSaudeResponseDTO;
 import com.emertag.emertagAPP.dtos.InformacaoSaudeRequestDTO;
 import com.emertag.emertagAPP.entity.InformacaoSaude;
@@ -34,6 +35,14 @@ public class InformacaoSaudeController {
 
        InformacaoSaude info = informacaoSaudeService.adicionar( idPerfil, dto.getTipo(), dto.getDescricao(), solicitante);
         return  ResponseEntity.status(201).build(); 
+    }
+
+    @PutMapping
+    public ResponseEntity<DadosSaudeResponseDTO> substituir(@PathVariable Long idPerfil, @RequestBody DadosSaudeRequestDTO dto, @AuthenticationPrincipal Usuario solicitante){
+
+        informacaoSaudeService.substituirTodas(idPerfil, informacaoSaudeMapper.paraMapa(dto), solicitante);
+        var agrupado = informacaoSaudeService.listarAgrupadoPorTipo(idPerfil);
+        return ResponseEntity.ok(informacaoSaudeMapper.paraResponseDTO(agrupado));
     }
 
     @DeleteMapping("/{idInformacao}")

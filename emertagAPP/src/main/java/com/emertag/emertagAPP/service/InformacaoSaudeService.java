@@ -58,6 +58,27 @@ public class InformacaoSaudeService {
         perfilService.marcarSaudeAtualizada(idPerfil);
     }
 
+    @Transactional
+    public void substituirTodas(Long idPerfil, Map<TipoInformacaoSaude, List<String>> novas, Usuario solicitante) {
+        PerfilEmergencia perfil = autorizacaoService.validarAdministrador(idPerfil, solicitante);
+
+        informacaoRepository.deleteAll(informacaoRepository.findByPerfil_IdPerfil(idPerfil));
+
+        novas.forEach((tipo, descricoes) -> {
+            if (descricoes == null) return;
+            descricoes.stream()
+                    .filter(descricao -> descricao != null && !descricao.isBlank())
+                    .map(descricao -> InformacaoSaude.builder()
+                            .perfil(perfil)
+                            .tipo(tipo)
+                            .descricao(descricao.trim())
+                            .build())
+                    .forEach(informacaoRepository::save);
+        });
+
+        perfilService.marcarSaudeAtualizada(idPerfil);
+    }
+
     @Transactional(readOnly = true)
     public Map<TipoInformacaoSaude, List<String>> listarAgrupadoPorTipo(Long idPerfil) {
         List<InformacaoSaude> todas = informacaoRepository.findByPerfil_IdPerfil(idPerfil);

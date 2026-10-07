@@ -40,12 +40,21 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usúario nao encontrado."));
     }
 
-    @Transactional(readOnly = true)
-    public Usuario atualizar(Usuario usuarioAutenticado, String nome, String email, String fotoUrl){
+    @Transactional
+    public Usuario atualizar(Usuario usuarioAutenticado, String nome, String telefone, String fotoUrl){
         usuarioAutenticado.setNome(nome);
-        usuarioAutenticado.setEmail(email);
+        usuarioAutenticado.setTelefone(telefone);
         usuarioAutenticado.setFotoUrl(fotoUrl);
         return usuarioRepository.save(usuarioAutenticado);
+    }
+
+    @Transactional
+    public void alterarSenha(Usuario usuarioAutenticado, String senhaAtual, String novaSenha){
+        if(!passwordEncoder.matches(senhaAtual, usuarioAutenticado.getSenhaHash())){
+            throw new IllegalArgumentException("Senha atual incorreta.");
+        }
+        usuarioAutenticado.setSenhaHash(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuarioAutenticado);
     }
 
 }

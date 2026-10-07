@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "EmerTag",
+    "slug": "EmerTag",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8FAFC"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "backgroundColor": "#F8FAFC"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
