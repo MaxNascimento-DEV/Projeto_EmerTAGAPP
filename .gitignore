@@ -1,0 +1,16 @@
+# Regras gerais do repositório.
+# Cada projeto tem o seu próprio .gitignore (backend/ e mobile/).
+
+### Editores / IDEs ###
+.vscode/
+.idea/
+*.iml
+
+### Sistema operacional ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Variáveis de ambiente ###
+.env
+.env.local
