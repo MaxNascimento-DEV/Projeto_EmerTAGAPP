@@ -71,4 +71,10 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioMapper.paraUsuarioResponseDTO(atualizado));
     }
 
+    @PutMapping("/senha")
+    public ResponseEntity<Void> alterarSenha(@AuthenticationPrincipal Usuario usuarioAutenticado, @Valid @RequestBody AlterarSenhaDTO dto){
+        usuarioService.alterarSenha(usuarioAutenticado, dto.getSenhaAtual(), dto.getNovaSenha());
+        return ResponseEntity.noContent().build();
+    }
+
 }
