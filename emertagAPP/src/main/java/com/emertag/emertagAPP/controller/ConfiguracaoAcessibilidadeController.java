@@ -35,12 +35,4 @@ public class ConfiguracaoAcessibilidadeController {
         return ResponseEntity.ok(configuracaoAcessibilidadeMapper.paraResponseDTO(salvo));
      }   
 
-
-
-
-
-
-
-
-
 }
