@@ -10,8 +10,8 @@ import lombok.*;
 
 public class ConviteRedeRequestDTO {
 
-    private String emailConvidade;
-    private String podeVisualizarPrivado;
-    private String podeEditar;
+    private String emailConvidado;
+    private Boolean podeVisualizarPrivado;
+    private Boolean podeEditar;
 
 }
