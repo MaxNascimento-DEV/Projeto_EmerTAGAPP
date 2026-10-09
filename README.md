@@ -38,17 +38,18 @@ Projeto acadêmico desenvolvido para a faculdade (Análise e Desenvolvimento de 
 
 ## Tecnologias
 
-| Camada         | Tecnologia                             |
-| -------------- | -------------------------------------- |
-| Linguagem      | Java 21                                |
-| Framework      | Spring Boot 4.1.1                      |
-| Persistência   | Spring Data JPA (Hibernate)            |
-| Banco de dados | MySQL 8                                |
-| Migrations     | Flyway                                 |
-| Segurança      | Spring Security + JWT (JJWT 0.12.6)    |
-| Validação      | Bean Validation (`jakarta.validation`) |
-| Build          | Maven (Maven Wrapper)                  |
-| Utilitários    | Lombok                                 |
+| Camada                       | Tecnologia                             |
+| ---------------------------- | -------------------------------------- |
+| Linguagem                    | Java 21                                |
+| Framework                    | Spring Boot 4.1.1                      |
+| Persistência                 | Spring Data JPA (Hibernate)            |
+| Banco de dados               | MySQL 8                                |
+| Migrations                   | Flyway                                 |
+| Segurança                    | Spring Security + JWT (JJWT 0.12.6)    |
+| Validação                    | Bean Validation (`jakarta.validation`) |
+| Build                        | Maven (Maven Wrapper)                  |
+| Utilitários                  | Lombok                                 |
+| Inteligência Artificial (IA) | Claude Code (Auxiliar de Produção )    |
 
 ## Arquitetura
 
@@ -291,14 +292,19 @@ O `GlobalExceptionHandler` converte exceções em respostas HTTP:
 - [x] CORS
 - [x] `GET /perfis/{id}` (buscar um perfil específico)
 - [x] URL pública do QR Code configurável (`app.url-publica`), hoje fixa no mapper
-- [x] Documentação interativa com Swagger/OpenAPI
 - [x] Upload de foto (hoje `fotoUrl` é apenas uma URL)
 - [x] Refresh token
-- [x] Envio de e-mail para os convites
 
-## Autores
+## Autores & Responsabilidades.
 
 Projeto EmerTag - desenvolvido para fins acadêmicos.
 
-- Maxwell Cadete
--
+- Maxwell Cadete (back-End)
+- Alinne Gabrielle (front-End)
+- Marcelo Henrique (Banco de Dados + Documentação)
+- Felipe José (Mobile)
+- Giovanna Alencastro (Front-End + Elaboração do Projeto)
+- Jose Nilton (Banco de Dados + Documentação)
+- Carlos Henrique (Back-End)
+- Maysa Gabrielle (Documentação)
+- Heberth Igor (Documentação)
