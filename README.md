@@ -112,7 +112,7 @@ Oito tabelas, criadas pelas migrations em `src/main/resources/db/migration`:
 **1. Clone o repositório**
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/MaxNascimento-DEV/Projeto_EmerTAGAPP.git
 cd emertagAPP
 ```
 
