@@ -10,9 +10,9 @@ Em uma emergência, quem socorre não sabe se a vítima tem alergia, toma algum 
 
 ## 🎬 Demonstração
 
-Veja o aplicativo funcionando, do cadastro ao convite de um cuidador (cerca de 3 minutos). Clique na imagem para assistir:
+Veja o aplicativo funcionando, do cadastro ao convite de um cuidador (cerca de 3 minutos):
 
-[![Vídeo de demonstração do EmerTag](docs/demo-preview.png)](docs/demo.mp4)
+https://github.com/user-attachments/assets/48e5b6ff-9374-4fae-b7a4-10c83780d5ed
 
 O que aparece no vídeo:
 
