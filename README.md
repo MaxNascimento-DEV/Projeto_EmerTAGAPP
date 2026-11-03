@@ -96,46 +96,16 @@ Por lidar com dados de saúde, a proteção das informações é parte central d
 
 ---
 
-## 📌 Situação do projeto
-
-**Já pronto**
-
-- [x] Cadastro e login de usuários
-- [x] Perfis de emergência, informações de saúde e contatos
-- [x] Controle de privacidade da página pública
-- [x] QR Code com acesso público e renovação do código
-- [x] Rede de cuidado com convites e permissões
-- [x] Configurações de acessibilidade
-- [x] Protótipo do aplicativo no Expo
-
-**Próximos passos**
-
-- [ ] Envio de e-mail para os convites
-- [ ] Upload de foto de perfil
-- [ ] Documentação interativa da API (Swagger)
-- [ ] Testes automatizados
-- [ ] Publicação online (deploy)
-
----
-
-## 👩‍💻 Para quem desenvolve
-
-As instruções de instalação, as variáveis de ambiente, a lista completa de endpoints, o modelo de dados e as decisões de arquitetura estão em **[docs/DOCUMENTACAO-TECNICA.md](docs/DOCUMENTACAO-TECNICA.md)**.
-
-Para rodar o servidor localmente, em resumo:
-
-```bash
-git clone https://github.com/MaxNascimento-DEV/Projeto_EmerTAGAPP.git
-cd emertagAPP
-./mvnw spring-boot:run      # no Windows: .\mvnw.cmd spring-boot:run
-```
-
-É preciso ter o JDK 21 e o MySQL 8 instalados. Os detalhes estão no documento técnico.
-
----
-
 ## 🤝 Equipe
 
 Projeto **EmerTag** desenvolvido para fins acadêmicos.
 
-<!-- Adicione aqui os nomes e perfis da equipe -->
+- Maxwell Cadete (back-End)
+- Alinne Gabrielle (front-End)
+- Marcelo Henrique (Banco de Dados + Documentação)
+- Felipe José (Mobile)
+- Giovanna Alencastro (Front-End + Elaboração do Projeto)
+- Jose Nilton (Banco de Dados + Documentação)
+- Carlos Henrique (Back-End)
+- Maysa Gabrielle (Documentação)
+- Heberth Igor (Documentação)
