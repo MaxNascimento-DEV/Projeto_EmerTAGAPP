@@ -8,10 +8,13 @@ import {
   ScrollView,
   Image,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as Sharing from 'expo-sharing';
 import Avatar from '../Components/Avatar';
 import { avisar, confirmar } from '../../services/avisos';
 
@@ -38,9 +41,50 @@ export default function QrCodeScreen({
   onRegenerateQRCode
 }: QrCodeScreenProps) {
   const [gerando, setGerando] = useState(false);
+  const [compartilhando, setCompartilhando] = useState(false);
 
   const baixar = () => {
     Linking.openURL(urlImagemQr(urlPublica, 1000)).catch(() => avisar('Não foi possível abrir o QR Code.'));
+  };
+
+  // Abre a página pública do perfil no navegador, sem precisar escanear o QR Code
+  const visualizarPagina = () => {
+    Linking.openURL(urlPublica).catch(() => avisar('Não foi possível abrir a página de emergência.'));
+  };
+
+  // Baixa a imagem para um arquivo temporário e abre o menu nativo de compartilhamento
+  const compartilhar = async () => {
+    setCompartilhando(true);
+    try {
+      // No navegador (Expo Web) não há arquivo local: compartilha o link da imagem
+      if (Platform.OS === 'web') {
+        const link = urlImagemQr(urlPublica, 1000);
+        if (typeof navigator !== 'undefined' && navigator.share) {
+          await navigator.share({ title: 'QR Code de Emergência', url: link });
+        } else {
+          avisar('Compartilhar não está disponível neste navegador.');
+        }
+        return;
+      }
+
+      if (!(await Sharing.isAvailableAsync())) {
+        avisar('Compartilhar não está disponível neste aparelho.');
+        return;
+      }
+
+      const destino = `${FileSystem.cacheDirectory}qrcode-emergencia.png`;
+      const { uri, status } = await FileSystem.downloadAsync(urlImagemQr(urlPublica, 1000), destino);
+      if (status !== 200) throw new Error('download');
+
+      await Sharing.shareAsync(uri, {
+        mimeType: 'image/png',
+        dialogTitle: 'Compartilhar QR Code',
+      });
+    } catch {
+      avisar('Não foi possível compartilhar o QR Code.');
+    } finally {
+      setCompartilhando(false);
+    }
   };
 
   const regenerar = async () => {
@@ -115,6 +159,32 @@ export default function QrCodeScreen({
           >
             <Feather name="download" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
             <Text style={styles.downloadButtonText}>Baixar QR Code</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.shareButton}
+            activeOpacity={0.7}
+            onPress={compartilhar}
+            disabled={compartilhando || gerando}
+          >
+            {compartilhando ? (
+              <ActivityIndicator color="#3B82F6" />
+            ) : (
+              <>
+                <Feather name="share-2" size={18} color="#3B82F6" style={{ marginRight: 8 }} />
+                <Text style={styles.shareButtonText}>Compartilhar QR Code</Text>
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.viewButton}
+            activeOpacity={0.7}
+            onPress={visualizarPagina}
+            disabled={gerando}
+          >
+            <Feather name="external-link" size={18} color="#3B82F6" style={{ marginRight: 8 }} />
+            <Text style={styles.viewButtonText}>Visualizar página de emergência</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -245,6 +315,38 @@ const styles = StyleSheet.create({
   },
   downloadButtonText: {
     color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  shareButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#3B82F6',
+    borderRadius: 12,
+    height: 52,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  shareButtonText: {
+    color: '#3B82F6',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  viewButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#3B82F6',
+    borderRadius: 12,
+    height: 52,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  viewButtonText: {
+    color: '#3B82F6',
     fontSize: 16,
     fontWeight: '700',
   },
