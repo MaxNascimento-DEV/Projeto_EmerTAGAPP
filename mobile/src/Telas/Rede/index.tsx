@@ -40,6 +40,7 @@ export default function RedeScreen({
   const [membros, setMembros] = useState<MembroRede[]>([]);
   const [convitesPendentes, setConvitesPendentes] = useState<ConviteRede[]>([]);
   const [convitesRecebidos, setConvitesRecebidos] = useState<ConviteRede[]>([]);
+  const [perfisQueCuido, setPerfisQueCuido] = useState<MembroRede[]>([]);
   const [carregando, setCarregando] = useState(false);
 
   const carregarPerfil = useCallback(async () => {
@@ -61,9 +62,15 @@ export default function RedeScreen({
 
   useEffect(() => { carregarPerfil(); }, [carregarPerfil]);
 
+  // Perfis de outras pessoas em que o usuário entrou como cuidador
+  const carregarMinhaRede = useCallback(() => {
+    api.rede.minhaRede().then(setPerfisQueCuido).catch(() => {});
+  }, []);
+
   useEffect(() => {
     api.convites.meus().then(setConvitesRecebidos).catch(() => {});
-  }, []);
+    carregarMinhaRede();
+  }, [carregarMinhaRede]);
 
   const cancelarConvite = async (convite: ConviteRede) => {
     if (idPerfil === null) return;
@@ -86,6 +93,7 @@ export default function RedeScreen({
         await api.convites.recusar(convite.idConvite);
       }
       setConvitesRecebidos(lista => lista.filter(c => c.idConvite !== convite.idConvite));
+      if (aceitar) carregarMinhaRede();
     } catch (e) {
       avisar('Não foi possível responder o convite', mensagemErro(e));
     }
@@ -99,7 +107,7 @@ export default function RedeScreen({
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" />
 
       {/* CABEÇALHO AZUL */}
       <View style={styles.headerBar} />
@@ -133,6 +141,28 @@ export default function RedeScreen({
                 <TouchableOpacity style={styles.moreButton} onPress={() => responderConvite(convite, false)} activeOpacity={0.6}>
                   <Feather name="x" size={22} color="#EF4444" />
                 </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* PERFIS QUE CUIDO (redes de outras pessoas das quais faço parte) */}
+        {perfisQueCuido.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Perfis que você cuida</Text>
+            {perfisQueCuido.map((rede) => (
+              <View key={rede.idRede} style={styles.memberCard}>
+                <View style={styles.avatarTeal}>
+                  <Feather name="heart" size={22} color="#00A3A0" />
+                </View>
+                <View style={styles.memberInfo}>
+                  <Text style={styles.memberName}>{rede.nomePerfil}</Text>
+                  <Text style={styles.memberRole}>Você é cuidador</Text>
+                  <View style={styles.statusRow}>
+                    <Text style={styles.memberStatus}>{descricaoPermissao(rede)}</Text>
+                    <Feather name={rede.podeEditar ? 'edit-2' : 'eye'} size={12} color="#64748B" />
+                  </View>
+                </View>
               </View>
             ))}
           </View>

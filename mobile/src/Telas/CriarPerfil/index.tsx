@@ -22,7 +22,7 @@ export default function CriarPerfilScreen({
 }: CriarPerfilScreenProps) {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" />
 
       {/* CABEÇALHO COM BOTÃO VOLTAR */}
       <View style={styles.header}>

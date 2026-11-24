@@ -26,6 +26,8 @@ const ICONES = {
     biosseguranca: `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#DBEAFE"/><path d="M20 11L13 14V20C13 24 16 27.5 20 29C24 27.5 27 24 27 20V14L20 11Z" stroke="#2563EB" stroke-width="2" stroke-linejoin="round" fill="none"/><line x1="20" y1="17" x2="20" y2="22" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="24.5" r="1.2" fill="#2563EB"/></svg>`,
     necessidade: `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#FEF3C7"/><circle cx="16" cy="16" r="3" stroke="#D97706" stroke-width="1.8" fill="none"/><path d="M11 27C11 23.5 13.2 21.5 16 21.5C18.8 21.5 21 23.5 21 27" stroke="#D97706" stroke-width="1.8" stroke-linecap="round" fill="none"/><circle cx="24" cy="17" r="2.5" stroke="#D97706" stroke-width="1.8" fill="none"/><path d="M21 26C21 23.5 22.5 22 24 22C25.5 22 27 23.5 27 26" stroke="#D97706" stroke-width="1.8" stroke-linecap="round" fill="none"/><path d="M27 12L28 14L30 14L28.5 15.5L29 17.5L27 16.5L25 17.5L25.5 15.5L24 14L26 14L27 12Z" fill="#D97706"/></svg>`,
     contato: `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#DBEAFE"/><path d="M14 13C14 13 13 14.5 13 16C13 22 18 27 24 27C25.5 27 27 26 27 26L25.5 22.5L22 23L21 21.5C19.5 20.5 18.5 19.5 17.5 18L16 17L16.5 13.5L14 13Z" stroke="#2563EB" stroke-width="2" stroke-linejoin="round" fill="none"/></svg>`,
+    telefone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+    localizacao: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
     usuario: `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#E5E7EB"/><circle cx="20" cy="16" r="5" fill="#9CA3AF"/><path d="M10 32C10 26 14.5 22 20 22C25.5 22 30 26 30 32" fill="#9CA3AF"/></svg>`
 };
 
@@ -61,6 +63,20 @@ function renderizar(container, dados) {
         </header>
     `;
 
+    const acoesHtml = `
+        <section class="secao-emergencia acoes-emergencia">
+            <a href="tel:192" class="botao-acao botao-samu">
+                <span class="icone-acao">${ICONES.telefone}</span>
+                <span>Ligar para o SAMU — <strong>192</strong></span>
+            </a>
+            <button type="button" class="botao-acao botao-whatsapp" id="botao-avisar-rede">
+                <span class="icone-acao">${ICONES.localizacao}</span>
+                <span>Avisar a Rede de Cuidado</span>
+            </button>
+            <p class="status-localizacao" id="status-localizacao" role="status" aria-live="polite" hidden></p>
+        </section>
+    `;
+
     const cardsSaude = [];
 
     if (alergias.length) {
@@ -94,7 +110,10 @@ function renderizar(container, dados) {
 
     const rodapeHtml = `<footer class="rodape-emergencia"><strong>EmerTag</strong> — Informação certa. Mais cuidado. Sempre.<br>Esta página é apenas informativa e não substitui atendimento médico profissional.</footer>`;
 
-    container.innerHTML = cabecalhoHtml + secaoSaudeHtml + secaoContatosHtml + rodapeHtml;
+    container.innerHTML = cabecalhoHtml + acoesHtml + secaoSaudeHtml + secaoContatosHtml + rodapeHtml;
+
+    document.getElementById("botao-avisar-rede")
+        .addEventListener("click", () => avisarRedeCuidado(nome));
 
     const imgFoto = document.getElementById("foto-perfil-img");
     if (imgFoto) {
@@ -105,6 +124,45 @@ function renderizar(container, dados) {
             this.replaceWith(placeholder);
         });
     }
+}
+
+// Obtém a localização atual (com autorização do navegador) e abre o WhatsApp
+// com a mensagem de alerta preenchida. O envio é sempre confirmado pela pessoa.
+function avisarRedeCuidado(nome) {
+    const botao = document.getElementById("botao-avisar-rede");
+    const status = document.getElementById("status-localizacao");
+    const mostrarStatus = (texto) => { status.textContent = texto; status.hidden = !texto; };
+
+    const abrirWhatsApp = (linkMapa) => {
+        let mensagem = `🚨 ALERTA EmerTag: ${nome} pode precisar de ajuda.`;
+        mensagem += linkMapa
+            ? `\nLocalização atual: ${linkMapa}`
+            : `\nNão foi possível obter a localização.`;
+        botao.disabled = false;
+        window.location.href = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+    };
+
+    if (!("geolocation" in navigator)) {
+        mostrarStatus("Seu navegador não permite acessar a localização. A mensagem será enviada sem ela.");
+        abrirWhatsApp(null);
+        return;
+    }
+
+    botao.disabled = true;
+    mostrarStatus("Obtendo localização...");
+
+    navigator.geolocation.getCurrentPosition(
+        (posicao) => {
+            const { latitude, longitude } = posicao.coords;
+            mostrarStatus("");
+            abrirWhatsApp(`https://www.google.com/maps?q=${latitude.toFixed(6)},${longitude.toFixed(6)}`);
+        },
+        () => {
+            mostrarStatus("Localização não autorizada ou indisponível. A mensagem será enviada sem ela.");
+            abrirWhatsApp(null);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+    );
 }
 
 function escapeHtml(str) {
