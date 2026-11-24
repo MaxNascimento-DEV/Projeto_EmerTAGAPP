@@ -8,8 +8,12 @@ import {
   ScrollView,
   Image,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform,
+  Share
 } from 'react-native';
+import * as Sharing from 'expo-sharing';
+import { File, Paths } from 'expo-file-system';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import Avatar from '../Components/Avatar';
@@ -38,9 +42,34 @@ export default function QrCodeScreen({
   onRegenerateQRCode
 }: QrCodeScreenProps) {
   const [gerando, setGerando] = useState(false);
+  const [compartilhando, setCompartilhando] = useState(false);
 
   const baixar = () => {
     Linking.openURL(urlImagemQr(urlPublica, 1000)).catch(() => avisar('Não foi possível abrir o QR Code.'));
+  };
+
+  // Baixa a imagem do QR Code do perfil selecionado para o cache e abre o menu nativo de compartilhamento
+  const compartilhar = async () => {
+    const mensagem = `QR Code de emergência${nome ? ` de ${nome}` : ''}: ${urlPublica}`;
+    setCompartilhando(true);
+    try {
+      if (Platform.OS !== 'web' && (await Sharing.isAvailableAsync())) {
+        const destino = new File(Paths.cache, `qrcode-emertag-${Date.now()}.png`);
+        const arquivo = await File.downloadFileAsync(urlImagemQr(urlPublica, 1000), destino, { idempotent: true });
+        await Sharing.shareAsync(arquivo.uri, {
+          mimeType: 'image/png',
+          UTI: 'public.png',
+          dialogTitle: 'Compartilhar QR Code',
+        });
+      } else {
+        // Sem suporte a compartilhar arquivos (ex.: web): compartilha o link da imagem
+        await Share.share({ message: `${mensagem}\n${urlImagemQr(urlPublica, 1000)}` });
+      }
+    } catch {
+      avisar('Não foi possível compartilhar o QR Code.');
+    } finally {
+      setCompartilhando(false);
+    }
   };
 
   const regenerar = async () => {
@@ -61,7 +90,7 @@ export default function QrCodeScreen({
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" />
 
       {/* CABEÇALHO */}
       <View style={styles.header}>
@@ -115,6 +144,20 @@ export default function QrCodeScreen({
           >
             <Feather name="download" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
             <Text style={styles.downloadButtonText}>Baixar QR Code</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.downloadButton, styles.shareButton]} 
+            activeOpacity={0.8}
+            onPress={compartilhar}
+            disabled={compartilhando || gerando}
+          >
+            {compartilhando ? (
+              <ActivityIndicator color="#FFFFFF" style={{ marginRight: 8 }} />
+            ) : (
+              <Feather name="share-2" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+            )}
+            <Text style={styles.downloadButtonText}>Compartilhar QR Code</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -242,6 +285,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
+  },
+  shareButton: {
+    backgroundColor: '#16A34A',
   },
   downloadButtonText: {
     color: '#FFFFFF',
