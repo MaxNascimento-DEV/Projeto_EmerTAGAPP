@@ -99,7 +99,7 @@ export default function RedeScreen({
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" />
 
       {/* CABEÇALHO AZUL */}
       <View style={styles.headerBar} />

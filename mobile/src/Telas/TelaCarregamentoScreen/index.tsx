@@ -21,7 +21,7 @@ export default function TelaCarregamentoScreen({ onFinish }: TelaCarregamentoPro
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F8FAFC" />
+      <StatusBar barStyle="dark-content" />
       <Animated.View style={[styles.content, { opacity }]}>
         {/* CÍRCULOS + LOGO NO CENTRO */}
         <View style={styles.logoArea}>

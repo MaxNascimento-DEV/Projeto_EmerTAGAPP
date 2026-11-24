@@ -47,7 +47,7 @@ export default function DadosContaScreen({ usuario, onBack, onSave }: DadosConta
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" />
 
       {/* CABEÇALHO */}
       <View style={styles.header}>
